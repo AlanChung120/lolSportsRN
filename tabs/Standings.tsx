@@ -1,10 +1,45 @@
-import { Text, View, StyleSheet } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
+import { fetchStandings } from '../api/standing'
+import { useQuery } from 'react-query'
 
 export default function Standings() {
+  const { data: standingsData, isLoading: standingsLoad, error: standingsError } = useQuery('standings', () => fetchStandings())
+
+  if (standingsLoad || standingsError) {
+    return
+  }
+
+  const renderStanding = ({item}: any) => {
+    return (
+      <View>
+        <View>
+          <Text>Ranking: {item.rank}</Text>
+        </View>
+        <View>
+          <Text>image: {item.team.image_url}</Text>
+        </View>
+        <View>
+          <Text>name: {item.team.name}</Text>
+        </View>
+        <View>
+          <Text>Win: {item.wins}</Text>
+        </View>
+        <View>
+          <Text>Losses: {item.losses}</Text>
+        </View>
+      </View>
+    )
+  }
+
+  //console.log(standingsData)
   return (
-    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-      <Text>Standings</Text>
-    </View>
+    <SafeAreaView>
+      <FlatList
+        data={standingsData}
+        renderItem={renderStanding}
+        keyExtractor={(item) => String(item.team.id)}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -21,4 +56,4 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
-});
+})

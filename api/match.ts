@@ -1,13 +1,12 @@
 import axios from 'axios'
 
-
 export async function fetchMatches() {
   const options = {
     method: 'GET',
     url: 'https://api.pandascore.co/lol/matches',
     params: {
       'filter[league_id]': '293',
-      'range[scheduled_at]': '2023-07-30T00:00:00Z, 2023-07-30T23:59:59Z' ,
+      'range[scheduled_at]': '2023-07-30T00:00:00Z, 2023-07-30T23:59:59Z',
       sort: 'scheduled_at',
       page: '1',
       per_page: '100'
@@ -21,7 +20,7 @@ export async function fetchMatches() {
   try {
     return axios.request(options).then((resp) => resp.data)
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 
 }

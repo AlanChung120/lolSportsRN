@@ -37,7 +37,7 @@ export default function Matches() {
     )
   }
 
-  console.log(matchesData)
+  //console.log(matchesData)
   return (
     <SafeAreaView>
       <FlatList
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
-});
+})
