@@ -6,7 +6,8 @@ export async function fetchMatches() {
     method: 'GET',
     url: 'https://api.pandascore.co/lol/matches',
     params: {
-      'range[scheduled_at][0]': '2023-07-30T00:00:00Z' ,
+      'filter[league_id]': '293',
+      'range[scheduled_at]': '2023-07-30T00:00:00Z, 2023-07-30T23:59:59Z' ,
       sort: 'scheduled_at',
       page: '1',
       per_page: '100'
@@ -16,13 +17,11 @@ export async function fetchMatches() {
       authorization: "Bearer 3c_9nXv0AMBnWO81RbPJvz_GlEc4KvEO8W3uxSetjeL3ntmGpYE"
     }
   }
-      
-  axios
-    .request(options)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.error(error);
-    })
+  
+  try {
+    return axios.request(options).then((resp) => resp.data)
+  } catch (error) {
+    console.error(error);
+  }
+
 }
