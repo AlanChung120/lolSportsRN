@@ -1,5 +1,4 @@
 import { FlatList, StyleSheet, Text, View, Switch, SafeAreaView } from 'react-native'
-import { leagues } from '../const'
 import { useSelector, useDispatch } from 'react-redux'
 
 export default function Settings() {
@@ -7,27 +6,23 @@ export default function Settings() {
   const followings = useSelector((state: any) => state.followings)
   const dispatch = useDispatch()
 
-  function handleFollow(changedTo: boolean, leagueName: string) {
-    if (changedTo) {
-      dispatch({ type: 'A'+leagueName })
+  function handleSwitch(leagueIndex?: string) {
+    if (leagueIndex) {
+      dispatch({ type: 'L'+leagueIndex })
     } else {
-      dispatch({ type: 'R'+leagueName })
+      dispatch({ type: 'H' })
     }
   }
 
-  function handleHideScore() {
-    dispatch({ type: 'H' })
-  }
-
-  const renderFollows = ({item}: any) => {
+  const renderFollows = ({item, index}: any) => {
     return (
       <View>
-        <Text>{item[0]}</Text>
+        <Text>{item.name}</Text>
         <Switch
           trackColor={{false: '#E9EFE5', true: '#70E024'}}
           thumbColor='white'
-          onValueChange={(value : any) => handleFollow(value, item[0])}
-          value={followings.includes(item[0])}
+          onValueChange={() => handleSwitch(String(index))}
+          value={item.following}
         />
       </View>
     )
@@ -35,21 +30,21 @@ export default function Settings() {
 
   return (
     <SafeAreaView>
-      <View>
+      {/* <View>
         <Text>Hide Score</Text>
         <Switch
           trackColor={{false: '#E9EFE5', true: '#70E024'}}
           thumbColor='white'
-          onValueChange={handleHideScore}
+          onValueChange={() => handleSwitch()}
           value={hideScore}
         />
-      </View>
+      </View> */}
       <View>
-        <Text>Following</Text>
+        {/* <Text>Following</Text> */}
         <FlatList
-          data={leagues}
+          data={followings}
           renderItem={renderFollows}
-          keyExtractor={(item) => String(item[0])}
+          keyExtractor={(item) => String(item.name)}
         />
       </View>
     </SafeAreaView>

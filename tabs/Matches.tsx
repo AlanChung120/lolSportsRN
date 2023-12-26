@@ -1,15 +1,20 @@
 import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { useQuery } from 'react-query'
+import { useSelector } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function Matches() {
   const { data: matchesData, isLoading: matchesLoad, error: matchesError } = useQuery('matches', () => fetchMatches())
+  const hideScore = useSelector((state: any) => state.hideScore)
+  const followings = useSelector((state: any) => state.followings)
+  console.log(followings)
 
   if (matchesLoad || matchesError) {
     return
   }
 
-  const renderMatch = ({item}: any) => {
+  const renderMatch = ({ item }: any) => {
     return (
       <View>
         <View>
@@ -40,6 +45,10 @@ export default function Matches() {
   //console.log(matchesData)
   return (
     <SafeAreaView>
+      {followings.map((league: any) => {
+        <Text>{league.name}</Text>
+      }
+      )}
       <FlatList
         data={matchesData}
         renderItem={renderMatch}

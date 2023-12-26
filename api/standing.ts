@@ -22,7 +22,7 @@ function getTournamentID() {
 }
 
 export async function fetchStandings() {
-  let tournamentID = await getTournamentID()
+  let tournamentID = await getTournamentID() //only do this monthly? 10654
 
   const options = {
     method: 'GET',
