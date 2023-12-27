@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-function getTournamentID() {
+export function getTournamentID(leagueID: string) {
   const options = {
     method: 'GET',
-    url: 'https://api.pandascore.co/leagues/293/tournaments',
+    url: 'https://api.pandascore.co/leagues/' + leagueID + '/tournaments',
     params: {
       'filter[has_bracket]': 'false',
       page: '1',
@@ -22,7 +22,7 @@ function getTournamentID() {
 }
 
 export async function fetchStandings() {
-  let tournamentID = await getTournamentID() //only do this monthly? 10654
+  let tournamentID = await getTournamentID("293") //only do this monthly? 10654
 
   const options = {
     method: 'GET',

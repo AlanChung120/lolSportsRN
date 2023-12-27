@@ -1,46 +1,110 @@
-import { FlatList, StyleSheet, Text, View, Switch, SafeAreaView } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { FlatList, StyleSheet, Text, View, Switch, SafeAreaView, Button } from 'react-native'
+import { League } from 'interfaces/League'
+import { useState, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import settings from '../initial.json'
+import { resetSettings, getRecentCode } from '../api/settings'
 
 export default function Settings() {
-  const hideScore = useSelector((state: any) => state.hideScore)
-  const followings = useSelector((state: any) => state.followings)
-  const dispatch = useDispatch()
+  const [followings, setFollowings] = useState<League[]>([])
+  const [hideScore, setHideScore] = useState(false)
 
-  function handleSwitch(leagueIndex?: string) {
-    if (leagueIndex) {
-      dispatch({ type: 'L'+leagueIndex })
-    } else {
-      dispatch({ type: 'H' })
+  async function getSettings() {
+    try {
+      const settingJson = await AsyncStorage.getItem('setting')
+      console.log(settingJson)
+      if (settingJson === null) {
+        setFollowings(settings.followings)
+        setHideScore(settings.hideScore)
+      } else {
+        const parsed = JSON.parse(settingJson)
+        setFollowings(parsed.followings)
+        setHideScore(parsed.hideScore)
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
-  const renderFollows = ({item, index}: any) => {
+  async function setSettings() {
+    const result = {
+      hideScore: hideScore,
+      followings: followings
+    }
+    try {
+      AsyncStorage.setItem('setting', JSON.stringify(result))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getSettings()
+
+      return () => {
+        setSettings()
+      }
+    }, [])
+  )
+
+
+  function handleSwitch(leagueIndex: number) {
+    if (leagueIndex === -1) {
+      setHideScore(!hideScore)
+    } else {
+      let changedArray = [...followings]
+      changedArray[leagueIndex].following = !followings[leagueIndex].following
+      setFollowings(changedArray)
+    }
+  }
+
+  const renderFollows = ({ item, index }: any) => {
     return (
       <View>
         <Text>{item.name}</Text>
-        <Switch
-          trackColor={{false: '#E9EFE5', true: '#70E024'}}
-          thumbColor='white'
-          onValueChange={() => handleSwitch(String(index))}
-          value={item.following}
-        />
+        <View>
+          <Button
+            onPress={() => getRecentCode(item.code, index)}
+            title="Update Recent Code"
+            color="#841584"
+            accessibilityLabel="Get recent code"
+          />
+        </View>
+        <View>
+          <Switch
+              trackColor={{ false: '#E9EFE5', true: '#70E024' }}
+              thumbColor='white'
+              onValueChange={() => handleSwitch(index)}
+              value={item.following}
+            />
+        </View>
       </View>
     )
   }
 
   return (
     <SafeAreaView>
-      {/* <View>
+      <View>
         <Text>Hide Score</Text>
         <Switch
-          trackColor={{false: '#E9EFE5', true: '#70E024'}}
+          trackColor={{ false: '#E9EFE5', true: '#70E024' }}
           thumbColor='white'
-          onValueChange={() => handleSwitch()}
+          onValueChange={() => handleSwitch(-1)}
           value={hideScore}
         />
-      </View> */}
+      </View>
       <View>
-        {/* <Text>Following</Text> */}
+        <Button
+          onPress={resetSettings}
+          title="Reset Settings"
+          color="#841584"
+          accessibilityLabel="Reset setting"
+        />
+      </View>
+      <View>
+        <Text>Following</Text>
         <FlatList
           data={followings}
           renderItem={renderFollows}
