@@ -18,14 +18,13 @@ export default function Matches() {
       const settingJson = await AsyncStorage.getItem('setting')
       if (settingJson !== null) {
         const parsed = JSON.parse(settingJson)
-        setFollowingsCode(worldsCode)
+        let newCode = followingsCode
         parsed.followings.map((league: League) => {
           if (league.following) {
-            let newCode = followingsCode
             newCode += "," + league.code
-            setFollowingsCode(newCode)
           }
         })
+        setFollowingsCode(newCode)
         setHideScore(parsed.hideScore)
       }
     } catch (e) {
