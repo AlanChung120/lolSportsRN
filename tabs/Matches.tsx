@@ -3,27 +3,29 @@ import { fetchMatches } from '../api/match'
 import { useQuery } from 'react-query'
 import { useCallback, useRef, useState } from 'react'
 import { League } from 'interfaces/League'
-import { getSettings } from '../api/settings'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import settings from '../initial.json'
+import { worldsCode } from '../const'
 
 export default function Matches() {
   const firstTime = useRef(true)
-  const [followings, setFollowings] = useState<League[]>([])
+  const [followingsCode, setFollowingsCode] = useState(worldsCode)
   const [hideScore, setHideScore] = useState(false)
-  const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followings], () => fetchMatches())
+  const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode], () => fetchMatches(followingsCode))
 
-  async function getSettings() { //only get the setting you need
+  async function getSettings() {
     try {
       const settingJson = await AsyncStorage.getItem('setting')
-      console.log(settingJson)
-      if (settingJson === null) {
-        setFollowings(settings.followings) // just default value (worlds and msi must be true)
-        setHideScore(settings.hideScore) // just default value
-      } else {
+      if (settingJson !== null) {
         const parsed = JSON.parse(settingJson)
-        setFollowings(parsed.followings)
+        setFollowingsCode(worldsCode)
+        parsed.followings.map((league: League) => {
+          if (league.following) {
+            let newCode = followingsCode
+            newCode += "," + league.code
+            setFollowingsCode(newCode)
+          }
+        })
         setHideScore(parsed.hideScore)
       }
     } catch (e) {
@@ -69,7 +71,7 @@ export default function Matches() {
           <Text>Results: {item.results[0].score} - {item.results[1].score}</Text>
         </View>
         <View>
-          <Text>Patch: {item.videogame_version.name}</Text>
+          {item.videogame_version ? <Text>Patch: {item.videogame_version.name}</Text> : <Text>Patch: N.A.</Text>}
         </View>
       </View>
     )
@@ -78,7 +80,7 @@ export default function Matches() {
   //console.log(matchesData)
   return (
     <SafeAreaView>
-      {followings.map((league: any) => league.following ? <Text key={league.name}>{league.name}</Text> : <Text></Text> )}
+      <Text>{followingsCode}</Text>
       <FlatList
         data={matchesData}
         renderItem={renderMatch}

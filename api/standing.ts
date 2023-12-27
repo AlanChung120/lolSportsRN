@@ -21,8 +21,8 @@ export function getTournamentID(leagueID: string) {
   }
 }
 
-export async function fetchStandings() {
-  let tournamentID = await getTournamentID("293") //only do this monthly? 10654
+export async function fetchStandings(leagueID: string) {
+  const tournamentID = await getTournamentID(leagueID) //only do this monthly? 10654
 
   const options = {
     method: 'GET',

@@ -1,9 +1,41 @@
 import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
 import { fetchStandings } from '../api/standing'
 import { useQuery } from 'react-query'
+import { useCallback, useRef, useState } from 'react'
+import { League } from 'interfaces/League'
+import { initFollowings, worldsCode } from '../const'
+import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Standings() {
-  const { data: standingsData, isLoading: standingsLoad, error: standingsError } = useQuery('standings', () => fetchStandings())
+  const firstTime = useRef(true)
+  const [followings, setFollowings] = useState<League[]>(initFollowings)
+  const [currentLeague, setCurrentLeague] = useState(worldsCode)
+  const { data: standingsData, isLoading: standingsLoad, error: standingsError, refetch: standingsRefetch } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
+
+
+  async function getSettings() {
+    try {
+      const settingJson = await AsyncStorage.getItem('setting')
+      if (settingJson !== null) {
+        const parsed = JSON.parse(settingJson)
+        setFollowings(parsed.followings)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getSettings()
+      if (firstTime.current) {
+        firstTime.current = false
+        return
+      }
+      standingsRefetch()
+    }, [standingsRefetch])
+  )
 
   if (standingsLoad || standingsError) {
     return

@@ -3,25 +3,31 @@ import { League } from 'interfaces/League'
 import { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import settings from '../initial.json'
-import { resetSettings, getRecentCode } from '../api/settings'
+import { initFollowings } from '../const'
 
 export default function Settings() {
-  const [followings, setFollowings] = useState<League[]>([])
+  const [followings, setFollowings] = useState<League[]>(initFollowings)
   const [hideScore, setHideScore] = useState(false)
 
   async function getSettings() {
     try {
       const settingJson = await AsyncStorage.getItem('setting')
-      console.log(settingJson)
       if (settingJson === null) {
-        setFollowings(settings.followings)
-        setHideScore(settings.hideScore)
+        setSettings()
       } else {
         const parsed = JSON.parse(settingJson)
         setFollowings(parsed.followings)
         setHideScore(parsed.hideScore)
       }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async function resetSettings() { //remove this
+    try {
+      // await AsyncStorage.removeItem('setting')
+      await AsyncStorage.clear()
     } catch (e) {
       console.log(e)
     }
@@ -43,9 +49,9 @@ export default function Settings() {
     useCallback(() => {
       getSettings()
 
-      return () => {
-        setSettings()
-      }
+      // return () => {
+
+      // }
     }, [])
   )
 
@@ -58,20 +64,13 @@ export default function Settings() {
       changedArray[leagueIndex].following = !followings[leagueIndex].following
       setFollowings(changedArray)
     }
+    setSettings()
   }
 
   const renderFollows = ({ item, index }: any) => {
     return (
       <View>
         <Text>{item.name}</Text>
-        <View>
-          <Button
-            onPress={() => getRecentCode(item.code, index)}
-            title="Update Recent Code"
-            color="#841584"
-            accessibilityLabel="Get recent code"
-          />
-        </View>
         <View>
           <Switch
               trackColor={{ false: '#E9EFE5', true: '#70E024' }}
