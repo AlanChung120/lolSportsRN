@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function General({navigation}: any) {
   const [hideScore, setHideScore] = useState(false)
+  setSettings()
 
   async function getSettings() {
     try {
@@ -20,7 +21,7 @@ export default function General({navigation}: any) {
     }
   }
 
-  async function resetSettings() { //remove this
+  async function resetSettings() {
     try {
       await AsyncStorage.clear()
     } catch (e) {
@@ -30,7 +31,7 @@ export default function General({navigation}: any) {
 
   async function setSettings() {
     try {
-      AsyncStorage.setItem('hideScore', JSON.stringify(hideScore))
+      AsyncStorage.setItem('hideScore', String(hideScore))
     } catch (e) {
       console.log(e)
     }
@@ -41,7 +42,6 @@ export default function General({navigation}: any) {
       getSettings()
 
       // return () => {
-
       // }
     }, [])
   )
@@ -53,7 +53,7 @@ export default function General({navigation}: any) {
         <Switch
           trackColor={{ false: '#E9EFE5', true: '#70E024' }}
           thumbColor='white'
-          onValueChange={() => (setHideScore(!hideScore), setSettings())}
+          onValueChange={() => setHideScore(!hideScore)}
           value={hideScore}
         />
       </View>

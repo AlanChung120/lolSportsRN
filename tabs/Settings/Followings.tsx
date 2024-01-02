@@ -36,13 +36,12 @@ export default function Followings() {
       getSettings()
 
       // return () => {
-
       // }
     }, [])
   )
 
 
-  function handleSwitch(leagueIndex: number) {
+  function handleHeartClick(leagueIndex: number) {
     let changedArray = [...followings]
     changedArray[leagueIndex].following = !followings[leagueIndex].following
     setFollowings(changedArray)
@@ -57,7 +56,7 @@ export default function Followings() {
           <IconButton
             icon={item.following ? "heart": "heart-outline"}
             color={item.following ? "red": "black"}
-            onPress={() => handleSwitch(index)}
+            onPress={() => handleHeartClick(index)}
           />
         </View>
       </View>

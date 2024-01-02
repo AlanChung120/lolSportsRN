@@ -21,7 +21,7 @@ export default function Matches() {
       const followingsJson = await AsyncStorage.getItem('followings')
       if (followingsJson !== null) {
         const followingsParsed = JSON.parse(followingsJson)
-        let newCode = followingsCode
+        let newCode = worldsCode
         followingsParsed.map((league: League) => {
           if (league.following) {
             newCode += "," + league.code
@@ -29,8 +29,8 @@ export default function Matches() {
         })
         setFollowingsCode(newCode)
       }
-      if (hideScoreJson != null) {
-        const hideScoreParsed = JSON.parse(hideScoreJson)
+      if (hideScoreJson !== null) {
+        const hideScoreParsed = JSON.parse(hideScoreJson) as boolean 
         setHideScore(hideScoreParsed)
       }
     } catch (e) {
@@ -70,10 +70,7 @@ export default function Matches() {
           <Text>Bo{item.number_of_games}</Text>
         </View>
         <View>
-          <Text>Date: {item.scheduled_at}</Text>
-        </View>
-        <View>
-          <Text>Results: {item.results[0].score} - {item.results[1].score}</Text>
+          {!hideScore && item.status === "finished" ? <Text>Results: {item.results[0].score} - {item.results[1].score}</Text> : <Text>Date: {item.scheduled_at}</Text>}
         </View>
         <View>
           {item.videogame_version ? <Text>Patch: {item.videogame_version.name}</Text> : <Text>Patch: N.A.</Text>}
