@@ -7,6 +7,8 @@ import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { worldsCode } from '../const'
 
+//arrow-left, arrow-right, iconButton react native paper
+
 export default function Matches() {
   const firstTime = useRef(true)
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
@@ -15,17 +17,21 @@ export default function Matches() {
 
   async function getSettings() {
     try {
-      const settingJson = await AsyncStorage.getItem('setting')
-      if (settingJson !== null) {
-        const parsed = JSON.parse(settingJson)
+      const hideScoreJson = await AsyncStorage.getItem('hideScore')
+      const followingsJson = await AsyncStorage.getItem('followings')
+      if (followingsJson !== null) {
+        const followingsParsed = JSON.parse(followingsJson)
         let newCode = followingsCode
-        parsed.followings.map((league: League) => {
+        followingsParsed.map((league: League) => {
           if (league.following) {
             newCode += "," + league.code
           }
         })
         setFollowingsCode(newCode)
-        setHideScore(parsed.hideScore)
+      }
+      if (hideScoreJson != null) {
+        const hideScoreParsed = JSON.parse(hideScoreJson)
+        setHideScore(hideScoreParsed)
       }
     } catch (e) {
       console.log(e)

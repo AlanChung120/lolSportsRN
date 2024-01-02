@@ -16,10 +16,10 @@ export default function Standings() {
 
   async function getSettings() {
     try {
-      const settingJson = await AsyncStorage.getItem('setting')
-      if (settingJson !== null) {
-        const parsed = JSON.parse(settingJson)
-        setFollowings(parsed.followings)
+      const followingsJson = await AsyncStorage.getItem('followings')
+      if (followingsJson !== null) {
+        const followingsParsed = JSON.parse(followingsJson)
+        setFollowings(followingsParsed)
       }
     } catch (e) {
       console.log(e)
