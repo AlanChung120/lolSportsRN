@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Text, View } from 'react-native'
-import Matches from './tabs/Matches'
-import Settings from './tabs/Settings'
-import Standings from './tabs/Standings'
+import MatchesTab from './tabs/MatchesTab'
+import SettingsTab from './tabs/SettingsTab'
+import StandingsTab from './tabs/StandingsTab'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { FontAwesome, Feather } from '@expo/vector-icons'
@@ -19,11 +19,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
-        <Tab.Navigator screenOptions={screenOptions} initialRouteName="Matches">
+        <Tab.Navigator screenOptions={screenOptions} initialRouteName="MatchesTab">
 
           <Tab.Screen
-            name="Standings"
-            component={Standings}
+            name="StandingsTab"
+            component={StandingsTab}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (
@@ -40,8 +40,8 @@ export default function App() {
           />
 
           <Tab.Screen
-            name="Matches"
-            component={Matches}
+            name="MatchesTab"
+            component={MatchesTab}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (
@@ -58,8 +58,8 @@ export default function App() {
           />
 
           <Tab.Screen
-            name="Settings"
-            component={Settings}
+            name="SettingsTab"
+            component={SettingsTab}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (

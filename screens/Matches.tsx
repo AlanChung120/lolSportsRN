@@ -1,5 +1,6 @@
 import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
 import { fetchMatches } from '../api/match'
+import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
 import { useCallback, useRef, useState } from 'react'
 import { League } from 'interfaces/League'
@@ -7,9 +8,9 @@ import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { worldsCode } from '../const'
 
-//arrow-left, arrow-right, iconButton react native paper
+// arrow-right, iconButton react native paper
 
-export default function Matches() {
+export default function Matches({navigation}: any) {
   const firstTime = useRef(true)
   const [dateAt, setDateAt] = useState(new Date().toDateString())
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
@@ -53,15 +54,38 @@ export default function Matches() {
     setDateAt(prevDay.toDateString())
   }
 
-  useFocusEffect(
+  useFocusEffect( //multiple usefocuseffect?
     useCallback(() => {
+      console.log("callbacking")
+      navigation.setOptions({
+        headerLeft: () => (
+          <IconButton
+            icon="arrow-left"
+            color="black"
+            onPress={backwardPressed}
+          />
+        ),
+        headerTitle: () => (
+          <View>
+            <Text>{dateAt}</Text>
+          </View>
+        ),
+        headerRight:() => (
+          <IconButton
+            icon="arrow-right"
+            color="black"
+            onPress={forwardPressed}
+          />
+        ),
+      })
       getSettings()
       if (firstTime.current) {
+        console.log("hi")
         firstTime.current = false
         return
       }
       matchesRefetch()
-    }, [matchesRefetch])
+    }, [matchesRefetch, dateAt])
   )
 
 
@@ -97,7 +121,6 @@ export default function Matches() {
   //console.log(matchesData)
   return (
     <SafeAreaView>
-      <Text>{dateAt}</Text>
       <Text>{followingsCode}</Text>
       <FlatList
         data={matchesData}
