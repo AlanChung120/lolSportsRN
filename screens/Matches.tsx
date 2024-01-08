@@ -2,7 +2,7 @@ import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { League } from 'interfaces/League'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -11,11 +11,10 @@ import { worldsCode } from '../const'
 // arrow-right, iconButton react native paper
 
 export default function Matches({navigation}: any) {
-  const firstTime = useRef(true)
   const [dateAt, setDateAt] = useState(new Date().toDateString())
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
   const [hideScore, setHideScore] = useState(false)
-  const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode], () => fetchMatches(followingsCode, dateAt))
+  const { data: matchesData, isLoading: matchesLoad, error: matchesError } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
 
   async function getSettings() {
     try {
@@ -54,9 +53,8 @@ export default function Matches({navigation}: any) {
     setDateAt(prevDay.toDateString())
   }
 
-  useFocusEffect( //multiple usefocuseffect?
+  useFocusEffect(
     useCallback(() => {
-      console.log("callbacking")
       navigation.setOptions({
         headerLeft: () => (
           <IconButton
@@ -78,14 +76,14 @@ export default function Matches({navigation}: any) {
           />
         ),
       })
+    }, [dateAt])
+  )
+
+  useFocusEffect(
+    
+    useCallback(() => {
       getSettings()
-      if (firstTime.current) {
-        console.log("hi")
-        firstTime.current = false
-        return
-      }
-      matchesRefetch()
-    }, [matchesRefetch, dateAt])
+    }, [])
   )
 
 
@@ -121,7 +119,7 @@ export default function Matches({navigation}: any) {
   //console.log(matchesData)
   return (
     <SafeAreaView>
-      <Text>{followingsCode}</Text>
+      {/* <Text>{followingsCode}</Text> */}
       <FlatList
         data={matchesData}
         renderItem={renderMatch}

@@ -1,5 +1,6 @@
 import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
 import { fetchStandings } from '../api/standing'
+import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
 import { useCallback, useRef, useState } from 'react'
 import { League } from 'interfaces/League'
@@ -7,12 +8,11 @@ import { worldsCode } from '../const'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function Standings() {
-  const firstTime = useRef(true)
+export default function Standings({navigation}: any) {
   const [currentIndex, setCurrentIndex] = useState(-1)
   const [currentLeague, setCurrentLeague] = useState(worldsCode)
-  const [followings, setFollowings] = useState<League[]>([])
-  const { data: standingsData, isLoading: standingsLoad, error: standingsError, refetch: standingsRefetch } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
+  const followings = useRef<League[]>([])
+  const { data: standingsData, isLoading: standingsLoad, error: standingsError } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
 
 
   async function getSettings() {
@@ -20,8 +20,7 @@ export default function Standings() {
       const followingsJson = await AsyncStorage.getItem('followings')
       if (followingsJson !== null) {
         const followingsParsed = JSON.parse(followingsJson)
-        const newFollowings = followingsParsed.filter((league: League) => league.following)
-        setFollowings(newFollowings)
+        followings.current = followingsParsed.filter((league: League) => league.following)
       }
     } catch (e) {
       console.log(e)
@@ -30,37 +29,67 @@ export default function Standings() {
 
   function forwardPressed() {
     let nextIndex = 0
-    if (currentIndex === followings.length - 1) {
+    if (currentIndex === followings.current.length - 1) {
       nextIndex = -1
     } else {
-      nextIndex++
+      nextIndex = currentIndex + 1
     }
     setCurrentIndex(nextIndex)
-    setCurrentLeague(followings[nextIndex].code)
+    if (nextIndex === -1) {
+      setCurrentLeague(worldsCode)
+    } else {
+      setCurrentLeague(followings.current[nextIndex].code)
+    }
   }
 
   function backwardPressed() {
     let nextIndex = 0
-    if (currentIndex === -1 && followings.length === 0) {
-      nextIndex = -1
-    } else if (currentIndex === -1) {
-      nextIndex = followings.length - 1
+    if (currentIndex === -1) {
+      nextIndex = followings.current.length - 1
     } else {
-      nextIndex--
+      nextIndex = currentIndex -1
     }
     setCurrentIndex(nextIndex)
-    setCurrentLeague(followings[nextIndex].code)
+    if (nextIndex === -1) {
+      setCurrentLeague(worldsCode)
+    } else {
+      setCurrentLeague(followings.current[nextIndex].code)
+    }
   }
 
   useFocusEffect(
     useCallback(() => {
+      navigation.setOptions({
+        headerLeft: () => (
+          <IconButton
+            icon="arrow-left"
+            color="black"
+            onPress={backwardPressed}
+          />
+        ),
+        headerTitle: () => (
+          <View>
+            <Text>{currentIndex === -1 || followings.current.length === 0 ? "Worlds" : followings.current[currentIndex].name}</Text>
+          </View>
+        ),
+        headerRight:() => (
+          <IconButton
+            icon="arrow-right"
+            color="black"
+            onPress={forwardPressed}
+          />
+        ),
+      })
+    }, [currentIndex])
+  )
+
+
+  useFocusEffect(
+    useCallback(() => {
       getSettings()
-      if (firstTime.current) {
-        firstTime.current = false
-        return
-      }
-      standingsRefetch()
-    }, [standingsRefetch])
+      setCurrentIndex(-1)
+      setCurrentLeague(worldsCode)
+    }, [])
   )
 
   if (standingsLoad || standingsError) {
@@ -92,7 +121,6 @@ export default function Standings() {
   //console.log(standingsData)
   return (
     <SafeAreaView>
-      <Text>{currentIndex === -1 ? "Worlds" : followings[currentIndex].name}</Text>
       <FlatList
         data={standingsData}
         renderItem={renderStanding}

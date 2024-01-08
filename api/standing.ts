@@ -1,11 +1,14 @@
 import axios from 'axios'
 
 export function getTournamentID(leagueID: string) {
+  const start = new Date(0).toISOString()
+  const end = new Date().toISOString()
   const options = {
     method: 'GET',
     url: 'https://api.pandascore.co/leagues/' + leagueID + '/tournaments',
     params: {
       'filter[has_bracket]': 'false',
+      'range[begin_at]' : start + ", " + end,
       page: '1', // delete page options
       per_page: '1'
     },
