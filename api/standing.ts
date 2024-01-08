@@ -6,7 +6,7 @@ export function getTournamentID(leagueID: string) {
     url: 'https://api.pandascore.co/leagues/' + leagueID + '/tournaments',
     params: {
       'filter[has_bracket]': 'false',
-      page: '1',
+      page: '1', // delete page options
       per_page: '1'
     },
     headers: {
@@ -28,7 +28,7 @@ export async function fetchStandings(leagueID: string) {
     method: 'GET',
     url: `https://api.pandascore.co/tournaments/${tournamentID}/standings`,
     params: {
-      page: '1',
+      page: '1', // delete page options
       per_page: '100'
     },
     headers: {

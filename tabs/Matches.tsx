@@ -11,9 +11,10 @@ import { worldsCode } from '../const'
 
 export default function Matches() {
   const firstTime = useRef(true)
+  const [dateAt, setDateAt] = useState(new Date().toDateString())
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
   const [hideScore, setHideScore] = useState(false)
-  const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode], () => fetchMatches(followingsCode))
+  const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode], () => fetchMatches(followingsCode, dateAt))
 
   async function getSettings() {
     try {
@@ -36,6 +37,20 @@ export default function Matches() {
     } catch (e) {
       console.log(e)
     }
+  }
+
+  function forwardPressed() {
+    const currentDate = new Date(dateAt)
+    let nextDay = new Date(currentDate)
+    nextDay.setDate(currentDate.getDate() + 1)
+    setDateAt(nextDay.toDateString())
+  }
+
+  function backwardPressed() {
+    const currentDate = new Date(dateAt)
+    let prevDay = new Date(currentDate)
+    prevDay.setDate(currentDate.getDate() - 1)
+    setDateAt(prevDay.toDateString())
   }
 
   useFocusEffect(
@@ -82,6 +97,7 @@ export default function Matches() {
   //console.log(matchesData)
   return (
     <SafeAreaView>
+      <Text>{dateAt}</Text>
       <Text>{followingsCode}</Text>
       <FlatList
         data={matchesData}
