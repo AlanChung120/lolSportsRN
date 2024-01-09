@@ -1,19 +1,21 @@
-import { FlatList, SafeAreaView, Text, View, StyleSheet, Button } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { League } from 'interfaces/League'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { worldsCode } from '../const'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { getCalendars, getLocales } from 'expo-localization'
 
 // arrow-right, iconButton react native paper
 
 export default function Matches({navigation}: any) {
-  const [dateAt, setDateAt] = useState(new Date().toDateString())
-  const [showSelector, setShowSelector] = useState(false)
+  const deviceTimeZone = useRef(getCalendars()[0].timeZone)
+  const deviceLanguage = useRef(getLocales()[0].languageTag)
+  const [dateAt, setDateAt] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
   const [hideScore, setHideScore] = useState(false)
   const { data: matchesData, isLoading: matchesLoad, error: matchesError } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
@@ -42,24 +44,21 @@ export default function Matches({navigation}: any) {
   }
 
   function forwardPressed() {
-    const currentDate = new Date(dateAt)
-    let nextDay = currentDate
-    nextDay.setDate(currentDate.getDate() + 1)
-    setDateAt(nextDay.toDateString())
+    let nextDay = new Date(dateAt)
+    nextDay.setDate(dateAt.getDate() + 1)
+    setDateAt(nextDay)
   }
 
   function backwardPressed() {
-    const currentDate = new Date(dateAt)
-    let prevDay = currentDate
-    prevDay.setDate(currentDate.getDate() - 1)
-    setDateAt(prevDay.toDateString())
+    let prevDay = new Date(dateAt)
+    prevDay.setDate(dateAt.getDate() - 1)
+    setDateAt(prevDay)
   }
 
 
   function onChangeDate(_ : any, selectedDate : any) {
-    const newDateString = selectedDate!.toDateString()
-    setShowSelector(false)
-    setDateAt(newDateString)
+    const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+    setDateAt(newDate)
   }
 
   useFocusEffect(
@@ -73,16 +72,11 @@ export default function Matches({navigation}: any) {
           />
         ),
         headerTitle: () => (
-          <View>
-            <Button onPress={() => {setShowSelector(true)}} title={dateAt} />
-            {showSelector && (
-              <DateTimePicker
-                value={new Date(dateAt)}
-                is24Hour={true}
-                onChange={onChangeDate}
-              />
-            )}
-          </View>
+          <DateTimePicker
+            value={dateAt}
+            is24Hour={true}
+            onChange={onChangeDate}
+          />
         ),
         headerRight:() => (
           <IconButton
@@ -123,7 +117,7 @@ export default function Matches({navigation}: any) {
           <Text>Bo{item.number_of_games}</Text>
         </View>
         <View>
-          {!hideScore && item.status === "finished" ? <Text>Results: {item.results[0].score} - {item.results[1].score}</Text> : <Text>Date: {item.scheduled_at}</Text>}
+          {!hideScore && item.status === "finished" ? <Text>Results: {item.results[0].score} - {item.results[1].score}</Text> : <Text>Date: {new Date(item.scheduled_at).toLocaleString(deviceLanguage.current, { timeZone: deviceTimeZone.current! })}</Text>}
         </View>
         <View>
           {item.videogame_version ? <Text>Patch: {item.videogame_version.name}</Text> : <Text>Patch: N.A.</Text>}

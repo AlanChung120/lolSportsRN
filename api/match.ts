@@ -1,17 +1,17 @@
 import axios from 'axios'
 
-export async function fetchMatches(leagueIDs: string, date: string) {
-  const start = new Date(date + " 00:00:00 UTC").toISOString()
-  const end = new Date(date + " 23:59:59 UTC").toISOString()
+export async function fetchMatches(leagueIDs: string, date: Date) {
+  let end = new Date(date)
+  end.setDate(date.getDate() + 1)
   const options = {
     method: 'GET',
     url: 'https://api.pandascore.co/lol/matches',
     params: {
       'filter[league_id]': leagueIDs,
-      'range[scheduled_at]': start + ", " + end,
+      'range[scheduled_at]': date.toISOString() + ", " + end.toISOString(),
       sort: 'scheduled_at',
       page: '1', // delete page options
-      per_page: '100'
+      per_page: '100' 
     },
     headers: {
       accept: 'application/json',
