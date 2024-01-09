@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, StyleSheet, Button } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
@@ -7,11 +7,13 @@ import { League } from 'interfaces/League'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { worldsCode } from '../const'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 // arrow-right, iconButton react native paper
 
 export default function Matches({navigation}: any) {
   const [dateAt, setDateAt] = useState(new Date().toDateString())
+  const [showSelector, setShowSelector] = useState(false)
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
   const [hideScore, setHideScore] = useState(false)
   const { data: matchesData, isLoading: matchesLoad, error: matchesError } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
@@ -41,16 +43,23 @@ export default function Matches({navigation}: any) {
 
   function forwardPressed() {
     const currentDate = new Date(dateAt)
-    let nextDay = new Date(currentDate)
+    let nextDay = currentDate
     nextDay.setDate(currentDate.getDate() + 1)
     setDateAt(nextDay.toDateString())
   }
 
   function backwardPressed() {
     const currentDate = new Date(dateAt)
-    let prevDay = new Date(currentDate)
+    let prevDay = currentDate
     prevDay.setDate(currentDate.getDate() - 1)
     setDateAt(prevDay.toDateString())
+  }
+
+
+  function onChangeDate(_ : any, selectedDate : any) {
+    const newDateString = selectedDate!.toDateString()
+    setShowSelector(false)
+    setDateAt(newDateString)
   }
 
   useFocusEffect(
@@ -65,7 +74,14 @@ export default function Matches({navigation}: any) {
         ),
         headerTitle: () => (
           <View>
-            <Text>{dateAt}</Text>
+            <Button onPress={() => {setShowSelector(true)}} title={dateAt} />
+            {showSelector && (
+              <DateTimePicker
+                value={new Date(dateAt)}
+                is24Hour={true}
+                onChange={onChangeDate}
+              />
+            )}
           </View>
         ),
         headerRight:() => (
