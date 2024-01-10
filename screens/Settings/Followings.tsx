@@ -1,10 +1,12 @@
-import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import { FlatList, Text, View, SafeAreaView } from 'react-native'
 import { IconButton } from 'react-native-paper'
 import { League } from 'interfaces/League'
 import { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { initFollowings } from '../../const'
+import { styles } from '../../styles/common'
+import { listSeperator } from '../../components/common'
 
 export default function Followings() {
   const [followings, setFollowings] = useState<League[]>(initFollowings)
@@ -50,7 +52,7 @@ export default function Followings() {
 
   const renderFollows = ({ item, index }: any) => {
     return (
-      <View>
+      <View style={styles.item}>
         <Text>{item.name}</Text>
         <View>
           <IconButton
@@ -70,23 +72,9 @@ export default function Followings() {
           data={followings}
           renderItem={renderFollows}
           keyExtractor={(item) => String(item.name)}
+          ItemSeparatorComponent={listSeperator}
         />
       </View>
     </SafeAreaView>
   )
 }
-
-// style here
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    marginBottom: 10,
-  },
-})

@@ -1,7 +1,8 @@
-import {  StyleSheet, Text, View, Switch, SafeAreaView, Button } from 'react-native'
+import {  Text, View, Switch, SafeAreaView, Button } from 'react-native'
 import { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { styles } from '../../styles/common'
 
 export default function Settings({navigation}: any) {
   const [hideScore, setHideScore] = useState(false)
@@ -76,18 +77,3 @@ export default function Settings({navigation}: any) {
     </SafeAreaView>
   )
 }
-
-// style here
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    marginBottom: 10,
-  },
-})

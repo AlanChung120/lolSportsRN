@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, Image } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
@@ -9,8 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { worldsCode } from '../const'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { getCalendars, getLocales } from 'expo-localization'
-
-// arrow-right, iconButton react native paper
+import { styles } from '../styles/common'
+import { listSeperator, noMatches } from '../components/common'
 
 export default function Matches({navigation}: any) {
   const deviceTimeZone = useRef(getCalendars()[0].timeZone)
@@ -18,7 +18,7 @@ export default function Matches({navigation}: any) {
   const [dateAt, setDateAt] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
   const [followingsCode, setFollowingsCode] = useState(worldsCode)
   const [hideScore, setHideScore] = useState(false)
-  const { data: matchesData, isLoading: matchesLoad, error: matchesError } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
+  const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
 
   async function getSettings() {
     try {
@@ -54,7 +54,6 @@ export default function Matches({navigation}: any) {
     prevDay.setDate(dateAt.getDate() - 1)
     setDateAt(prevDay)
   }
-
 
   function onChangeDate(_ : any, selectedDate : any) {
     const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
@@ -103,12 +102,21 @@ export default function Matches({navigation}: any) {
 
   const renderMatch = ({ item }: any) => {
     return (
-      <View>
+      <View style={styles.item}>
         <View>
           <Text>Teams: {item.opponents[0].opponent.name} vs {item.opponents[1].opponent.name}</Text>
         </View>
         <View>
-          <Text>images: {item.opponents[0].opponent.image_url} vs {item.opponents[1].opponent.image_url}</Text>
+          <Image
+            style={styles.teamImage}
+            source={{uri: item.opponents[0].opponent.image_url}}
+            resizeMode="contain"
+          />
+          <Image
+            style={styles.teamImage}
+            source={{uri: item.opponents[1].opponent.image_url}}
+            resizeMode="contain"
+          />
         </View>
         <View>
           <Text>league: {item.league.name}</Text>
@@ -134,22 +142,11 @@ export default function Matches({navigation}: any) {
         data={matchesData}
         renderItem={renderMatch}
         keyExtractor={(item) => String(item.id)}
+        ItemSeparatorComponent={listSeperator}
+        ListEmptyComponent={noMatches}
+        onRefresh={matchesRefetch}
+        refreshing={false}
       />
     </SafeAreaView>
   )
 }
-
-// style here
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    marginBottom: 10,
-  },
-})

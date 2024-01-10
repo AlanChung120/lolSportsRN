@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, Text, View, StyleSheet } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, Image } from 'react-native'
 import { fetchStandings } from '../api/standing'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
@@ -7,12 +7,14 @@ import { League } from 'interfaces/League'
 import { worldsCode } from '../const'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { listSeperator, noStandings } from '../components/common'
+import { styles } from '../styles/common'
 
 export default function Standings({navigation}: any) {
   const [currentIndex, setCurrentIndex] = useState(-1)
   const [currentLeague, setCurrentLeague] = useState(worldsCode)
   const followings = useRef<League[]>([])
-  const { data: standingsData, isLoading: standingsLoad, error: standingsError } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
+  const { data: standingsData, isLoading: standingsLoad, error: standingsError, refetch: standingsRefetch } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
 
 
   async function getSettings() {
@@ -98,12 +100,16 @@ export default function Standings({navigation}: any) {
 
   const renderStanding = ({item}: any) => {
     return (
-      <View>
+      <View style={styles.item}>
         <View>
           <Text>Ranking: {item.rank}</Text>
         </View>
         <View>
-          <Text>image: {item.team.image_url}</Text>
+          <Image
+            style={styles.teamImage}
+            source={{uri: item.team.image_url}}
+            resizeMode="contain"
+          />
         </View>
         <View>
           <Text>name: {item.team.name}</Text>
@@ -125,22 +131,11 @@ export default function Standings({navigation}: any) {
         data={standingsData}
         renderItem={renderStanding}
         keyExtractor={(item) => String(item.team.id)}
+        ItemSeparatorComponent={listSeperator}
+        ListEmptyComponent={noStandings}
+        onRefresh={standingsRefetch}
+        refreshing={false}
       />
     </SafeAreaView>
   )
 }
-
-// style here
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    marginBottom: 10,
-  },
-})
