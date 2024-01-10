@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { initFollowings } from '../../const'
-import { styles } from '../../styles/common'
+import { styles, followingsStyles } from '../../styles/common'
 import { listSeperator } from '../../components/common'
 
 export default function Followings() {
@@ -52,9 +52,11 @@ export default function Followings() {
 
   const renderFollows = ({ item, index }: any) => {
     return (
-      <View style={styles.item}>
-        <Text>{item.name}</Text>
-        <View>
+      <View style={followingsStyles.listItem}>
+        <View style={followingsStyles.nameBlock}>
+        <Text style={styles.largerLeftText}>{item.name}</Text>
+        </View>
+        <View style={followingsStyles.buttonBlock}>
           <IconButton
             icon={item.following ? "heart": "heart-outline"}
             color={item.following ? "red": "black"}

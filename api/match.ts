@@ -9,9 +9,7 @@ export async function fetchMatches(leagueIDs: string, date: Date) {
     params: {
       'filter[league_id]': leagueIDs,
       'range[scheduled_at]': date.toISOString() + ", " + end.toISOString(),
-      sort: 'scheduled_at',
-      page: '1', // delete page options
-      per_page: '100' 
+      sort: 'scheduled_at'
     },
     headers: {
       accept: 'application/json',

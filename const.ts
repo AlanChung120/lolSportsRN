@@ -1,6 +1,10 @@
 import { League } from "./interfaces/League"
+import { Dimensions } from 'react-native'
 
 export const worldsCode = "297" // worlds followed by default
+export const screenWidth = Dimensions.get('screen').width
+export const screenHeight = Dimensions.get('screen').height
+export const textFontSize = 15
 
 export const initFollowings: League[] = [
   { name: "LCK", code: "293", following: false },

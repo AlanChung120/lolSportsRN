@@ -1,14 +1,15 @@
 import { Divider } from "@rneui/themed"
 import { Text } from "react-native"
+import { styles } from "../styles/common"
 
 export function listSeperator() {
   return <Divider width={3}/>
 }
 
 export function noMatches() {
-  return <Text>No Matches Scheduled</Text>
+  return <Text style={styles.notAvailableText}>No Matches Scheduled</Text>
 }
 
 export function noStandings() {
-  return <Text>Not Available</Text>
+  return <Text style={styles.notAvailableText}>Not Available</Text>
 }

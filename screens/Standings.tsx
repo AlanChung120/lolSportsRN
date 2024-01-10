@@ -4,11 +4,11 @@ import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
 import { useCallback, useRef, useState } from 'react'
 import { League } from 'interfaces/League'
-import { worldsCode } from '../const'
+import { textFontSize, worldsCode } from '../const'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { listSeperator, noStandings } from '../components/common'
-import { styles } from '../styles/common'
+import { styles, standingsStyles } from '../styles/common'
 
 export default function Standings({navigation}: any) {
   const [currentIndex, setCurrentIndex] = useState(-1)
@@ -70,9 +70,7 @@ export default function Standings({navigation}: any) {
           />
         ),
         headerTitle: () => (
-          <View>
-            <Text>{currentIndex === -1 || followings.current.length === 0 ? "Worlds" : followings.current[currentIndex].name}</Text>
-          </View>
+          <Text style={{fontSize: textFontSize * 1.5}}>{currentIndex === -1 || followings.current.length === 0 ? "Worlds" : followings.current[currentIndex].name}</Text>
         ),
         headerRight:() => (
           <IconButton
@@ -100,25 +98,19 @@ export default function Standings({navigation}: any) {
 
   const renderStanding = ({item}: any) => {
     return (
-      <View style={styles.item}>
-        <View>
-          <Text>Ranking: {item.rank}</Text>
+      <View style={standingsStyles.listItem}>
+        <View style={standingsStyles.rankingBlock}>
+          <Text style={styles.largerLeftText}>{item.rank}.</Text>
         </View>
-        <View>
+        <View style={standingsStyles.imageBlock}>
           <Image
-            style={styles.teamImage}
+            style={standingsStyles.teamImage}
             source={{uri: item.team.image_url}}
             resizeMode="contain"
           />
         </View>
-        <View>
-          <Text>name: {item.team.name}</Text>
-        </View>
-        <View>
-          <Text>Win: {item.wins}</Text>
-        </View>
-        <View>
-          <Text>Losses: {item.losses}</Text>
+        <View style={standingsStyles.infoBlock}>
+          <Text style={styles.largerLeftText}>{item.team.name} {"("} {item.wins} - {item.losses} {")"}</Text>
         </View>
       </View>
     )
@@ -126,8 +118,9 @@ export default function Standings({navigation}: any) {
 
   //console.log(standingsData)
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
+        style={{ flex: 1 }}
         data={standingsData}
         renderItem={renderStanding}
         keyExtractor={(item) => String(item.team.id)}

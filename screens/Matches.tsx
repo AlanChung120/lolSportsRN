@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { worldsCode } from '../const'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { getCalendars, getLocales } from 'expo-localization'
-import { styles } from '../styles/common'
+import { styles, matchStyles } from '../styles/common'
 import { listSeperator, noMatches } from '../components/common'
 
 export default function Matches({navigation}: any) {
@@ -72,6 +72,7 @@ export default function Matches({navigation}: any) {
         ),
         headerTitle: () => (
           <DateTimePicker
+            style={{backgroundColor: 'white', borderColor: 'white', shadowColor: 'white'}}
             value={dateAt}
             is24Hour={true}
             onChange={onChangeDate}
@@ -102,43 +103,48 @@ export default function Matches({navigation}: any) {
 
   const renderMatch = ({ item }: any) => {
     return (
-      <View style={styles.item}>
-        <View>
-          <Text>Teams: {item.opponents[0].opponent.name} vs {item.opponents[1].opponent.name}</Text>
-        </View>
-        <View>
+      <View style={matchStyles.listItem}>
+
+        <View style={matchStyles.block}>
           <Image
-            style={styles.teamImage}
+            style={matchStyles.teamImage}
             source={{uri: item.opponents[0].opponent.image_url}}
             resizeMode="contain"
           />
+          <Text style={styles.generalText}>{item.opponents[0].opponent.name}</Text>
+
+        </View>
+
+        <View style={matchStyles.block}>
+          <Text style={styles.generalText}>{item.league.name}</Text>
+          <Text style={styles.generalText}>Best of {item.number_of_games}</Text>
+          {item.videogame_version ? 
+            <Text style={styles.generalText}>Patch: {item.videogame_version.name}</Text> : 
+            <Text style={styles.generalText}>Patch: N.A.</Text>}
+          {!hideScore && item.status === "finished" ? 
+            <Text style={styles.generalText}>{item.results[0].score} - {item.results[1].score}</Text> : 
+            <Text style={styles.generalText}>{new Date(item.scheduled_at).toLocaleString(deviceLanguage.current, { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: deviceTimeZone.current! })}</Text>}
+        </View>
+
+        <View style={matchStyles.block}>
           <Image
-            style={styles.teamImage}
+            style={matchStyles.teamImage}
             source={{uri: item.opponents[1].opponent.image_url}}
             resizeMode="contain"
           />
+          <Text style={styles.generalText}>{item.opponents[1].opponent.name}</Text>
         </View>
-        <View>
-          <Text>league: {item.league.name}</Text>
-        </View>
-        <View>
-          <Text>Bo{item.number_of_games}</Text>
-        </View>
-        <View>
-          {!hideScore && item.status === "finished" ? <Text>Results: {item.results[0].score} - {item.results[1].score}</Text> : <Text>Date: {new Date(item.scheduled_at).toLocaleString(deviceLanguage.current, { timeZone: deviceTimeZone.current! })}</Text>}
-        </View>
-        <View>
-          {item.videogame_version ? <Text>Patch: {item.videogame_version.name}</Text> : <Text>Patch: N.A.</Text>}
-        </View>
+
       </View>
     )
   }
 
   //console.log(matchesData)
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       {/* <Text>{followingsCode}</Text> */}
       <FlatList
+        style={{ flex: 1 }}
         data={matchesData}
         renderItem={renderMatch}
         keyExtractor={(item) => String(item.id)}
