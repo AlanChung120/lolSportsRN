@@ -1,8 +1,8 @@
-import {  Text, View, Switch, SafeAreaView, Button } from 'react-native'
+import {  Text, View, Switch, SafeAreaView, Pressable } from 'react-native'
 import { useState, useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { styles } from '../../styles/common'
+import { styles, settingsStyles } from '../../styles/common'
 
 export default function Settings({navigation}: any) {
   const [hideScore, setHideScore] = useState(false)
@@ -49,30 +49,30 @@ export default function Settings({navigation}: any) {
 
   return (
     <SafeAreaView>
-      <View>
-        <Text>Hide Score</Text>
-        <Switch
-          trackColor={{ false: '#E9EFE5', true: '#70E024' }}
-          thumbColor='white'
-          onValueChange={() => setHideScore(!hideScore)}
-          value={hideScore}
-        />
-      </View>
-      <View>
-        <Button
-          onPress={() => navigation.navigate("Followings")}
-          title="Followings"
-          color="#841584"
-          accessibilityLabel="View/Set Following Leagues"
-        />
-      </View>
-      <View>
-        <Button
-          onPress={resetSettings}
-          title="Reset Settings"
-          color="#841584"
-          accessibilityLabel="Reset setting"
-        />
+      <View style={settingsStyles.settingsList}>
+        <View style={settingsStyles.listItem}>
+          <View style={settingsStyles.nameBlock}>
+            <Text style={styles.largerLeftText}>Hide Score</Text>
+          </View>
+          <View style={settingsStyles.switchBlock}>
+            <Switch
+              trackColor={{ false: '#E9EFE5', true: '#70E024' }}
+              thumbColor='white'
+              onValueChange={() => setHideScore(!hideScore)}
+              value={hideScore}
+            />
+          </View>
+        </View>
+        <View style={settingsStyles.listItem}>
+          <Pressable style={settingsStyles.followingButton} onPress={() => navigation.navigate("Followings")} accessibilityLabel="View/Set Following Leagues">
+            <Text style={styles.largerLeftText}>Followings {">"}</Text>
+          </Pressable>
+        </View>
+        <View style={settingsStyles.listItem}>
+          <Pressable style={settingsStyles.resetButton} onPress={resetSettings} accessibilityLabel="Reset setting">
+            <Text style={settingsStyles.resetText}>Reset Settings</Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   )

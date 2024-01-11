@@ -11,7 +11,8 @@ export const styles = StyleSheet.create({
   largerLeftText: {
     fontSize: textFontSize * 1.1,
     alignSelf: 'flex-start',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginLeft: 10
   },
   notAvailableText: {
     fontSize: textFontSize * 2,
@@ -78,4 +79,57 @@ export const followingsStyles = StyleSheet.create({
     alignSelf: 'center', 
     width: '10%'
   },
+})
+
+export const settingsStyles = StyleSheet.create({
+  settingsList: {
+    marginTop: 50,
+    flexDirection: 'column',
+    width: 0.8 * screenWidth,
+    borderColor: 'black',
+    alignSelf: 'center'
+  },
+  listItem: {
+    padding: 2,
+    margin: 2,
+    flexDirection: 'row',
+    borderColor: 'black',
+    height: '20%'
+  },
+  nameBlock: {
+    alignSelf: 'center', 
+    justifyContent: 'center', 
+    width: '80%',
+    height: '100%',
+    backgroundColor: '#E5E5E5'
+  },
+  switchBlock: {
+    alignSelf: 'center',
+    justifyContent: 'center', 
+    width: '20%',
+    height: '100%',
+    backgroundColor: '#E5E5E5'
+  },
+  followingButton: {
+    width: '100%',
+    justifyContent: 'center', 
+    height: '100%',
+    backgroundColor: '#E5E5E5'
+  },
+  arrowView: {
+    width: '5%',
+    height: '100%'
+  },
+  resetButton: {
+    textAlign: 'center',
+    justifyContent: 'center', 
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#E5E5E5',
+  },
+  resetText: {
+    color: 'red',
+    fontSize: textFontSize * 1.1,
+    textAlign: 'center'
+  }
 })

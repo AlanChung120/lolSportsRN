@@ -22,7 +22,7 @@ export default function Standings({navigation}: any) {
       const followingsJson = await AsyncStorage.getItem('followings')
       if (followingsJson !== null) {
         const followingsParsed = JSON.parse(followingsJson)
-        followings.current = followingsParsed.filter((league: League) => league.following)
+        followings.current = followingsParsed.filter((league: League) => league.following && league.standing)
       }
     } catch (e) {
       console.log(e)

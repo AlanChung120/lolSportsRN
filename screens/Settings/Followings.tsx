@@ -54,7 +54,7 @@ export default function Followings() {
     return (
       <View style={followingsStyles.listItem}>
         <View style={followingsStyles.nameBlock}>
-        <Text style={styles.largerLeftText}>{item.name}</Text>
+          <Text style={styles.largerLeftText}>{item.name}</Text>
         </View>
         <View style={followingsStyles.buttonBlock}>
           <IconButton
