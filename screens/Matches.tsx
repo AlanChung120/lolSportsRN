@@ -6,7 +6,7 @@ import { useCallback, useState, useRef } from 'react'
 import { League } from 'interfaces/League'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { worldsCode } from '../const'
+import { worlds } from '../const'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { getCalendars, getLocales } from 'expo-localization'
 import { styles, matchStyles } from '../styles/common'
@@ -16,7 +16,7 @@ export default function Matches({navigation}: any) {
   const deviceTimeZone = useRef(getCalendars()[0].timeZone)
   const deviceLanguage = useRef(getLocales()[0].languageTag)
   const [dateAt, setDateAt] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
-  const [followingsCode, setFollowingsCode] = useState(worldsCode)
+  const [followingsCode, setFollowingsCode] = useState(worlds.code)
   const [hideScore, setHideScore] = useState(false)
   const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
 
@@ -26,7 +26,7 @@ export default function Matches({navigation}: any) {
       const followingsJson = await AsyncStorage.getItem('followings')
       if (followingsJson !== null) {
         const followingsParsed = JSON.parse(followingsJson)
-        let newCode = worldsCode
+        let newCode = worlds.code
         followingsParsed.map((league: League) => {
           if (league.following) {
             newCode += "," + league.code

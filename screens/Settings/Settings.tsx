@@ -52,7 +52,7 @@ export default function Settings({navigation}: any) {
       <View style={settingsStyles.settingsList}>
         <View style={settingsStyles.listItem}>
           <View style={settingsStyles.nameBlock}>
-            <Text style={styles.largerLeftText}>Hide Score</Text>
+            <Text style={settingsStyles.settingsLeftText}>Hide Score</Text>
           </View>
           <View style={settingsStyles.switchBlock}>
             <Switch
@@ -65,7 +65,7 @@ export default function Settings({navigation}: any) {
         </View>
         <View style={settingsStyles.listItem}>
           <Pressable style={settingsStyles.followingButton} onPress={() => navigation.navigate("Followings")} accessibilityLabel="View/Set Following Leagues">
-            <Text style={styles.largerLeftText}>Followings {">"}</Text>
+            <Text style={settingsStyles.settingsLeftText}>Followings</Text>
           </Pressable>
         </View>
         <View style={settingsStyles.listItem}>

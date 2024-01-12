@@ -12,12 +12,11 @@ export const styles = StyleSheet.create({
     fontSize: textFontSize * 1.1,
     alignSelf: 'flex-start',
     textAlign: 'center',
-    marginLeft: 10
   },
   notAvailableText: {
     fontSize: textFontSize * 2,
     alignSelf: 'center',
-    marginTop: 50,
+    marginTop: 30,
     textAlign: 'center'
   }
 })
@@ -62,6 +61,27 @@ export const standingsStyles = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
+})
+
+export const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+      fontSize: textFontSize * 1.5,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      color: 'black',
+  },
+  inputAndroid: {
+      fontSize: textFontSize * 1.5,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'black'
+  }
 })
 
 export const followingsStyles = StyleSheet.create({
@@ -131,5 +151,11 @@ export const settingsStyles = StyleSheet.create({
     color: 'red',
     fontSize: textFontSize * 1.1,
     textAlign: 'center'
-  }
+  },
+  settingsLeftText: {
+    fontSize: textFontSize * 1.1,
+    alignSelf: 'flex-start',
+    textAlign: 'center',
+    marginLeft: 10
+  },
 })
