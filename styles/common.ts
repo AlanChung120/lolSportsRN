@@ -66,20 +66,10 @@ export const standingsStyles = StyleSheet.create({
 export const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
       fontSize: textFontSize * 1.5,
-      paddingVertical: 12,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
       color: 'black',
   },
   inputAndroid: {
       fontSize: textFontSize * 1.5,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderWidth: 0.5,
-      borderColor: 'purple',
-      borderRadius: 8,
       color: 'black'
   }
 })
