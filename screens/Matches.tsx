@@ -72,7 +72,6 @@ export default function Matches({navigation}: any) {
         ),
         headerTitle: () => (
           <DateTimePicker
-            style={{backgroundColor: 'white', borderColor: 'white', shadowColor: 'white'}}
             value={dateAt}
             is24Hour={true}
             onChange={onChangeDate}
