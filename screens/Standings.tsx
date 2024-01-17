@@ -18,7 +18,7 @@ export default function Standings({navigation}: any) {
     useCallback(() => {
       initFollowings.map(
         (league: League) => {
-          if ( league.standing ) {
+          if (league.standing) {
             followings.current.push({label: league.name, value: league.code})
           } 
         }

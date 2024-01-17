@@ -35,10 +35,14 @@ export async function fetchStandings(leagueID: string) {
       authorization: "Bearer 3c_9nXv0AMBnWO81RbPJvz_GlEc4KvEO8W3uxSetjeL3ntmGpYE"
     }
   }
-  
-  try {
-    return axios.request(options).then((resp) => resp.data)
-  } catch (error) {
-    console.error(error)
-  }
+
+  return axios.request(options)
+  .then((resp) => resp.data)
+  .catch((error) => {
+    if (error.response) {
+      []
+    } else {
+      console.error(error)
+    }
+  })
 }

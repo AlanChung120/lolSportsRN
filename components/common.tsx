@@ -11,5 +11,5 @@ export function noMatches() {
 }
 
 export function noStandings() {
-  return <Text style={styles.notAvailableText}>Not Available</Text>
+  return <Text style={styles.notAvailableText}>No Data Yet</Text>
 }
