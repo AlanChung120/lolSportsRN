@@ -24,12 +24,14 @@ export default function Standings({navigation}: any) {
         }
       )
       navigation.setOptions({
+        headerTitleAlign: 'center',
         headerTitle: () => (
           <RNPickerSelect
             style={pickerSelectStyles}
             placeholder={{}}
             onValueChange={(newCode: string) => setCurrentLeague(newCode)}
             items={followings.current}
+            useNativeAndroidPickerStyle={false}
           />
         )
       })

@@ -70,6 +70,7 @@ export default function Matches({navigation}: any) {
             onPress={backwardPressed}
           />
         ),
+        headerTitleAlign: 'center',
         headerTitle: () => (
           <DateTimePicker
             value={dateAt}

@@ -59,9 +59,7 @@ export default function Followings() {
 
   function handleHeartClick(leagueIndex: number, name: string) {
     let changedArray = [...searchedFollowings]
-    console.log("heart 2", changedArray)
     changedArray[leagueIndex].following = !changedArray[leagueIndex].following
-    console.log("heart 3", changedArray)
     setSearchedFollowings(changedArray)
     setSettings()
   }
