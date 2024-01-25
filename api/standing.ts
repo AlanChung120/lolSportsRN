@@ -25,6 +25,9 @@ export function getTournamentID(leagueID: string) {
 }
 
 export async function fetchStandings(leagueID: string) {
+  if (leagueID === "-1") {
+    return []
+  }
   const tournamentID = await getTournamentID(leagueID)
 
   const options = {

@@ -36,6 +36,16 @@ export const matchStyles = StyleSheet.create({
     height: "80%",
     width: "100%"
   },
+  showDate: {
+    backgroundColor: '#06A4EE',
+    alignSelf: 'center',
+    padding: 10
+  },
+  dateText: {
+    color: 'white',
+    fontSize: textFontSize * 1.5,
+    alignSelf: 'center'
+  }
 })
 
 export const standingsStyles = StyleSheet.create({
@@ -63,26 +73,19 @@ export const standingsStyles = StyleSheet.create({
   },
 })
 
+
 export const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-      fontSize: textFontSize * 1.5,
-      paddingVertical: 12,
-      paddingHorizontal: 10,
+  iosPicker: {
       borderWidth: 1,
       borderColor: 'gray',
       borderRadius: 4,
-      marginBottom: 2,
-      color: 'black',
+      marginBottom: 5,
+      backgroundColor:'white'
   },
-  inputAndroid: {
-      fontSize: textFontSize * 1.5,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderWidth: 0.5,
-      borderColor: 'purple',
-      borderRadius: 8,
-      marginBottom: 2,
-      color: 'black'
+  androidPicker: {
+      backgroundColor: '#06A4EE',
+      alignSelf: 'center',
+      padding: 10
   }
 })
 

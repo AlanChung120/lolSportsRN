@@ -24,7 +24,7 @@
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-paper": "^4.12.6",
-    "react-native-picker-select": "^9.0.0",
+    "react-native-select-dropdown": "^3.4.0",
     "react-query": "^3.39.3"
   },
   "devDependencies": {

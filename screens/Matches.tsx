@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, Text, View, Image, Button, Platform } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, Image, Pressable, Platform } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
@@ -77,9 +77,12 @@ export default function Matches({navigation}: any) {
         headerTitleAlign: 'center',
         headerTitle: () => ( 
           <View>
-            {Platform.OS === "ios" ? <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} /> :
+            {Platform.OS === "ios" ? 
+            <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} /> :
             <View>
-              <Button title={dateAt.toDateString()} onPress={() => setShowCalendar(true)}></Button>
+              <Pressable style={matchStyles.showDate} onPress={() => setShowCalendar(true)}>
+                <Text style={matchStyles.dateText}>{dateAt.toDateString()}</Text>
+              </Pressable>
               {showCalendar && <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} />}
             </View>
             }

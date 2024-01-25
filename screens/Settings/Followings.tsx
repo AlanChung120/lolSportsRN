@@ -85,7 +85,7 @@ export default function Followings() {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <SearchBar
-          platform={Platform.OS !== "ios" ? "android" : "ios"}
+          platform={Platform.OS === "ios" ? "ios" : "android"}
           placeholder="Type League Name..."
           onChangeText={(value: string) => searchHandler(value)}
           value={searchContent}

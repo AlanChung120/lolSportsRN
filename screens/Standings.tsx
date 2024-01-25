@@ -1,37 +1,41 @@
-import { FlatList, SafeAreaView, Text, View, Image } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, Image, Platform } from 'react-native'
 import { fetchStandings } from '../api/standing'
 import { useQuery } from 'react-query'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { League } from 'interfaces/League'
-import { initFollowings } from '../const'
+import { initFollowings, textFontSize } from '../const'
 import { useFocusEffect } from '@react-navigation/native'
 import { listSeperator, noStandings } from '../components/common'
 import { styles, standingsStyles, pickerSelectStyles } from '../styles/common'
-import RNPickerSelect from 'react-native-picker-select'
+import SelectDropdown from 'react-native-select-dropdown'
 
 export default function Standings({navigation}: any) {
-  const [currentLeague, setCurrentLeague] = useState("293")
-  const followings = useRef<{ label: string, value: string }[]>([])
+  const [currentLeague, setCurrentLeague] = useState("-1")
   const { data: standingsData, isLoading: standingsLoad, error: standingsError, refetch: standingsRefetch } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
 
   useFocusEffect(
     useCallback(() => {
-      initFollowings.map(
-        (league: League) => {
-          if (league.standing) {
-            followings.current.push({label: league.name, value: league.code})
-          } 
-        }
-      )
       navigation.setOptions({
         headerTitleAlign: 'center',
         headerTitle: () => (
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            placeholder={{}}
-            onValueChange={(newCode: string) => setCurrentLeague(newCode)}
-            items={followings.current}
-            useNativeAndroidPickerStyle={false}
+          <SelectDropdown
+            data={initFollowings} 
+            search={true}
+            searchPlaceHolder="Search League"
+            defaultButtonText="Select League"
+            onSelect={(selectedItem: League) => {
+              setCurrentLeague(selectedItem.code)
+            }}
+            buttonTextAfterSelection={(selectedItem: League) => {
+              return selectedItem.name
+            }}
+            rowTextForSelection={(item: League) => {
+              return item.name
+            }}
+            selectedRowStyle={{backgroundColor: "#CACACA"}}
+            rowStyle={{backgroundColor: "#E7E7E7"}}
+            buttonStyle={Platform.OS === "ios" ? pickerSelectStyles.iosPicker : pickerSelectStyles.androidPicker}
+            buttonTextStyle={Platform.OS === "ios" ? {fontSize: textFontSize * 1.5} : {fontSize: textFontSize * 1.5, color: 'white'}}
           />
         )
       })
