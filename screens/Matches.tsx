@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, Text, View, Image } from 'react-native'
+import { FlatList, SafeAreaView, Text, View, Image, Button, Platform } from 'react-native'
 import { fetchMatches } from '../api/match'
 import { IconButton } from 'react-native-paper'
 import { useQuery } from 'react-query'
@@ -16,8 +16,9 @@ export default function Matches({navigation}: any) {
   const deviceTimeZone = useRef(getCalendars()[0].timeZone)
   const deviceLanguage = useRef(getLocales()[0].languageTag)
   const [dateAt, setDateAt] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
+  const [showCalendar, setShowCalendar] = useState(false)
   const [followingsCode, setFollowingsCode] = useState(worlds.code)
-  const [hideScore, setHideScore] = useState(false)
+  const [hideScore, setHideScore] = useState(true)
   const { data: matchesData, isLoading: matchesLoad, error: matchesError, refetch: matchesRefetch } = useQuery(['matches', followingsCode, dateAt], () => fetchMatches(followingsCode, dateAt))
 
   async function getSettings() {
@@ -57,6 +58,9 @@ export default function Matches({navigation}: any) {
 
   function onChangeDate(_ : any, selectedDate : any) {
     const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+    if (Platform.OS === "android") {
+      setShowCalendar(false)
+    }
     setDateAt(newDate)
   }
 
@@ -71,14 +75,17 @@ export default function Matches({navigation}: any) {
           />
         ),
         headerTitleAlign: 'center',
-        headerTitle: () => (
-          <DateTimePicker
-            value={dateAt}
-            is24Hour={true}
-            onChange={onChangeDate}
-          />
+        headerTitle: () => ( 
+          <View>
+            {Platform.OS === "ios" ? <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} /> :
+            <View>
+              <Button title={dateAt.toDateString()} onPress={() => setShowCalendar(true)}></Button>
+              {showCalendar && <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} />}
+            </View>
+            }
+          </View>
         ),
-        headerRight:() => (
+        headerRight: () => (
           <IconButton
             icon="arrow-right"
             color="black"
@@ -86,7 +93,7 @@ export default function Matches({navigation}: any) {
           />
         ),
       })
-    }, [dateAt])
+    }, [dateAt, showCalendar])
   )
 
   useFocusEffect(
