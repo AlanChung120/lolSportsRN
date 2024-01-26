@@ -10,6 +10,7 @@ import { styles, standingsStyles, pickerSelectStyles } from '../styles/common'
 import SelectDropdown from 'react-native-select-dropdown'
 
 export default function Standings({navigation}: any) {
+  const standingsLeagues = initFollowings.filter((league: League) => league.standing)
   const [currentLeague, setCurrentLeague] = useState("-1")
   const { data: standingsData, isLoading: standingsLoad, error: standingsError, refetch: standingsRefetch } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
 
@@ -19,7 +20,7 @@ export default function Standings({navigation}: any) {
         headerTitleAlign: 'center',
         headerTitle: () => (
           <SelectDropdown
-            data={initFollowings} 
+            data={standingsLeagues} 
             search={true}
             searchPlaceHolder="Search League"
             defaultButtonText="Select League"
