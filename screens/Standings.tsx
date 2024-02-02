@@ -9,7 +9,7 @@ import { listSeperator, noStandings } from '../components/common'
 import { styles, standingsStyles, pickerSelectStyles } from '../styles/common'
 import SelectDropdown from 'react-native-select-dropdown'
 
-export default function Standings({navigation}: any) {
+export default function Standings({ navigation }: any) {
   const standingsLeagues = initFollowings.filter((league: League) => league.standing)
   const [currentLeague, setCurrentLeague] = useState("-1")
   const { data: standingsData, isLoading: standingsLoad, error: standingsError, refetch: standingsRefetch } = useQuery(['standings', currentLeague], () => fetchStandings(currentLeague))
@@ -20,7 +20,7 @@ export default function Standings({navigation}: any) {
         headerTitleAlign: 'center',
         headerTitle: () => (
           <SelectDropdown
-            data={standingsLeagues} 
+            data={standingsLeagues}
             search={true}
             searchPlaceHolder="Search League"
             defaultButtonText="Select League"
@@ -33,10 +33,10 @@ export default function Standings({navigation}: any) {
             rowTextForSelection={(item: League) => {
               return item.name
             }}
-            selectedRowStyle={{backgroundColor: "#CACACA"}}
-            rowStyle={{backgroundColor: "#E7E7E7"}}
+            selectedRowStyle={{ backgroundColor: "#CACACA" }}
+            rowStyle={{ backgroundColor: "#E7E7E7" }}
             buttonStyle={Platform.OS === "ios" ? pickerSelectStyles.iosPicker : pickerSelectStyles.androidPicker}
-            buttonTextStyle={Platform.OS === "ios" ? {fontSize: textFontSize * 1.5} : {fontSize: textFontSize * 1.5, color: 'white'}}
+            buttonTextStyle={Platform.OS === "ios" ? { fontSize: textFontSize * 1.5 } : { fontSize: textFontSize * 1.5, color: 'white' }}
           />
         )
       })
@@ -47,7 +47,7 @@ export default function Standings({navigation}: any) {
     return
   }
 
-  const renderStanding = ({item}: any) => {
+  const renderStanding = ({ item }: any) => {
     return (
       <View style={standingsStyles.listItem}>
         <View style={standingsStyles.rankingBlock}>
@@ -56,7 +56,7 @@ export default function Standings({navigation}: any) {
         <View style={standingsStyles.imageBlock}>
           <Image
             style={standingsStyles.teamImage}
-            source={{uri: item.team.image_url}}
+            source={{ uri: item.team.image_url }}
             resizeMode="contain"
           />
         </View>

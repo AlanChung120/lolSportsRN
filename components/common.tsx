@@ -3,7 +3,7 @@ import { Text } from "react-native"
 import { styles } from "../styles/common"
 
 export function listSeperator() {
-  return <Divider width={3}/>
+  return <Divider width={3} />
 }
 
 export function noMatches() {

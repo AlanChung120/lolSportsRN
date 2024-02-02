@@ -8,7 +8,7 @@ export function getTournamentID(leagueID: string) {
     url: 'https://api.pandascore.co/leagues/' + leagueID + '/tournaments',
     params: {
       'filter[has_bracket]': 'false',
-      'range[begin_at]' : start + ", " + end,
+      'range[begin_at]': start + ", " + end,
       page: '1',
       per_page: '1'
     },
@@ -40,12 +40,12 @@ export async function fetchStandings(leagueID: string) {
   }
 
   return axios.request(options)
-  .then((resp) => resp.data)
-  .catch((error) => {
-    if (error.response) {
-      []
-    } else {
-      console.error(error)
-    }
-  })
+    .then((resp) => resp.data)
+    .catch((error) => {
+      if (error.response) {
+        []
+      } else {
+        console.error(error)
+      }
+    })
 }

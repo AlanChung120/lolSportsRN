@@ -29,7 +29,7 @@ export const matchStyles = StyleSheet.create({
     height: 0.2 * screenHeight
   },
   block: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     width: '33.33%'
   },
   teamImage: {
@@ -56,15 +56,15 @@ export const standingsStyles = StyleSheet.create({
     height: 0.075 * screenHeight
   },
   rankingBlock: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     width: '7%'
   },
   imageBlock: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     width: '18%'
   },
   infoBlock: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     width: '75%'
   },
   teamImage: {
@@ -76,16 +76,16 @@ export const standingsStyles = StyleSheet.create({
 
 export const pickerSelectStyles = StyleSheet.create({
   iosPicker: {
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
-      marginBottom: 5,
-      backgroundColor:'white'
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    marginBottom: 5,
+    backgroundColor: 'white'
   },
   androidPicker: {
-      backgroundColor: '#06A4EE',
-      alignSelf: 'center',
-      padding: 10
+    backgroundColor: '#06A4EE',
+    alignSelf: 'center',
+    padding: 10
   }
 })
 
@@ -97,11 +97,11 @@ export const followingsStyles = StyleSheet.create({
     height: 0.05 * screenHeight
   },
   nameBlock: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     width: '90%'
   },
   buttonBlock: {
-    alignSelf: 'center', 
+    alignSelf: 'center',
     width: '10%'
   },
 })
@@ -122,22 +122,22 @@ export const settingsStyles = StyleSheet.create({
     height: '20%'
   },
   nameBlock: {
-    alignSelf: 'center', 
-    justifyContent: 'center', 
+    alignSelf: 'center',
+    justifyContent: 'center',
     width: '80%',
     height: '100%',
     backgroundColor: '#E5E5E5'
   },
   switchBlock: {
     alignSelf: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     width: '20%',
     height: '100%',
     backgroundColor: '#E5E5E5'
   },
   followingButton: {
     width: '100%',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     height: '100%',
     backgroundColor: '#E5E5E5'
   },
@@ -147,7 +147,7 @@ export const settingsStyles = StyleSheet.create({
   },
   resetButton: {
     textAlign: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     width: '100%',
     height: '100%',
     backgroundColor: '#E5E5E5',

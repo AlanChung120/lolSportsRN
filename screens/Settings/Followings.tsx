@@ -34,7 +34,7 @@ export default function Followings() {
     if (search === "") {
       setSearchedFollowings(followings.current)
     } else {
-      const filteredFollowings = followings.current.filter((league:League) => league.name.toLowerCase().includes(search))
+      const filteredFollowings = followings.current.filter((league: League) => league.name.toLowerCase().includes(search))
       setSearchedFollowings(filteredFollowings)
     }
   }
@@ -72,8 +72,8 @@ export default function Followings() {
         </View>
         <View style={followingsStyles.buttonBlock}>
           <IconButton
-            icon={item.following ? "heart": "heart-outline"}
-            color={item.following ? "red": "black"}
+            icon={item.following ? "heart" : "heart-outline"}
+            color={item.following ? "red" : "black"}
             onPress={() => handleHeartClick(index, item.name)}
           />
         </View>

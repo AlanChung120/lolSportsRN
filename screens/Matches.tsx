@@ -12,7 +12,7 @@ import { getCalendars, getLocales } from 'expo-localization'
 import { styles, matchStyles } from '../styles/common'
 import { listSeperator, noMatches } from '../components/common'
 
-export default function Matches({navigation}: any) {
+export default function Matches({ navigation }: any) {
   const deviceTimeZone = useRef(getCalendars()[0].timeZone)
   const deviceLanguage = useRef(getLocales()[0].languageTag)
   const [dateAt, setDateAt] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()))
@@ -36,7 +36,7 @@ export default function Matches({navigation}: any) {
         setFollowingsCode(newCode)
       }
       if (hideScoreJson !== null) {
-        const hideScoreParsed = JSON.parse(hideScoreJson) as boolean 
+        const hideScoreParsed = JSON.parse(hideScoreJson) as boolean
         setHideScore(hideScoreParsed)
       }
     } catch (e) {
@@ -56,7 +56,7 @@ export default function Matches({navigation}: any) {
     setDateAt(prevDay)
   }
 
-  function onChangeDate(_ : any, selectedDate : any) {
+  function onChangeDate(_: any, selectedDate: any) {
     const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
     if (Platform.OS === "android") {
       setShowCalendar(false)
@@ -75,16 +75,16 @@ export default function Matches({navigation}: any) {
           />
         ),
         headerTitleAlign: 'center',
-        headerTitle: () => ( 
+        headerTitle: () => (
           <View>
-            {Platform.OS === "ios" ? 
-            <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} /> :
-            <View>
-              <Pressable style={matchStyles.showDate} onPress={() => setShowCalendar(true)}>
-                <Text style={matchStyles.dateText}>{dateAt.toDateString()}</Text>
-              </Pressable>
-              {showCalendar && <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} />}
-            </View>
+            {Platform.OS === "ios" ?
+              <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} /> :
+              <View>
+                <Pressable style={matchStyles.showDate} onPress={() => setShowCalendar(true)}>
+                  <Text style={matchStyles.dateText}>{dateAt.toDateString()}</Text>
+                </Pressable>
+                {showCalendar && <DateTimePicker value={dateAt} is24Hour={true} onChange={onChangeDate} />}
+              </View>
             }
           </View>
         ),
@@ -100,7 +100,7 @@ export default function Matches({navigation}: any) {
   )
 
   useFocusEffect(
-    
+
     useCallback(() => {
       getSettings()
     }, [])
@@ -118,7 +118,7 @@ export default function Matches({navigation}: any) {
         <View style={matchStyles.block}>
           <Image
             style={matchStyles.teamImage}
-            source={{uri: item.opponents[0].opponent.image_url}}
+            source={{ uri: item.opponents[0].opponent.image_url }}
             resizeMode="contain"
           />
           <Text style={styles.generalText}>{item.opponents[0].opponent.name}</Text>
@@ -128,18 +128,18 @@ export default function Matches({navigation}: any) {
         <View style={matchStyles.block}>
           <Text style={styles.generalText}>{item.league.name}</Text>
           <Text style={styles.generalText}>Best of {item.number_of_games}</Text>
-          {item.videogame_version ? 
-            <Text style={styles.generalText}>Patch: {item.videogame_version.name}</Text> : 
+          {item.videogame_version ?
+            <Text style={styles.generalText}>Patch: {item.videogame_version.name}</Text> :
             <Text style={styles.generalText}>Patch: N.A.</Text>}
-          {!hideScore && item.status === "finished" ? 
-            <Text style={styles.generalText}>{item.results[0].score} - {item.results[1].score}</Text> : 
+          {!hideScore && item.status === "finished" ?
+            <Text style={styles.generalText}>{item.results[0].score} - {item.results[1].score}</Text> :
             <Text style={styles.generalText}>{new Date(item.scheduled_at).toLocaleString(deviceLanguage.current, { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: deviceTimeZone.current! })}</Text>}
         </View>
 
         <View style={matchStyles.block}>
           <Image
             style={matchStyles.teamImage}
-            source={{uri: item.opponents[1].opponent.image_url}}
+            source={{ uri: item.opponents[1].opponent.image_url }}
             resizeMode="contain"
           />
           <Text style={styles.generalText}>{item.opponents[1].opponent.name}</Text>
