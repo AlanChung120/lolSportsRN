@@ -151,7 +151,6 @@ export default function Matches({ navigation }: any) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/* <Text>{followingsCode}</Text> */}
       <FlatList
         style={{ flex: 1 }}
         data={matchesData}
