@@ -40,7 +40,7 @@ export default function Matches({ navigation }: any) {
         setHideScore(hideScoreParsed)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -149,7 +149,6 @@ export default function Matches({ navigation }: any) {
     )
   }
 
-  //console.log(matchesData)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <Text>{followingsCode}</Text> */}

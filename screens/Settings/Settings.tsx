@@ -18,7 +18,7 @@ export default function Settings({ navigation }: any) {
         setHideScore(hideScoreparsed)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -26,7 +26,7 @@ export default function Settings({ navigation }: any) {
     try {
       await AsyncStorage.clear()
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -34,16 +34,13 @@ export default function Settings({ navigation }: any) {
     try {
       AsyncStorage.setItem('hideScore', String(hideScore))
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
   useFocusEffect(
     useCallback(() => {
       getSettings()
-
-      // return () => {
-      // }
     }, [])
   )
 

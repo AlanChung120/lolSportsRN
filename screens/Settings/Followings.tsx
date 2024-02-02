@@ -24,7 +24,7 @@ export default function Followings() {
         setSearchedFollowings(followings.current)
       }
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -43,7 +43,7 @@ export default function Followings() {
     try {
       AsyncStorage.setItem('followings', JSON.stringify(followings.current))
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 
@@ -51,13 +51,11 @@ export default function Followings() {
     useCallback(() => {
       getSettings()
       setSearchContent("")
-      // return () => {
-      // }
     }, [])
   )
 
 
-  function handleHeartClick(leagueIndex: number, name: string) {
+  function handleHeartClick(leagueIndex: number) {
     let changedArray = [...searchedFollowings]
     changedArray[leagueIndex].following = !changedArray[leagueIndex].following
     setSearchedFollowings(changedArray)
@@ -74,7 +72,7 @@ export default function Followings() {
           <IconButton
             icon={item.following ? "heart" : "heart-outline"}
             color={item.following ? "red" : "black"}
-            onPress={() => handleHeartClick(index, item.name)}
+            onPress={() => handleHeartClick(index)}
           />
         </View>
       </View>

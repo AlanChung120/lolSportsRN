@@ -66,8 +66,7 @@ export default function Standings({ navigation }: any) {
       </View>
     )
   }
-
-  //console.log(standingsData)
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
