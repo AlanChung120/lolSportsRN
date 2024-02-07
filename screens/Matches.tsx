@@ -116,12 +116,16 @@ export default function Matches({ navigation }: any) {
       <View style={matchStyles.listItem}>
 
         <View style={matchStyles.block}>
-          <Image
-            style={matchStyles.teamImage}
-            source={{ uri: item.opponents[0].opponent.image_url }}
-            resizeMode="contain"
-          />
-          <Text style={styles.generalText}>{item.opponents[0].opponent.name}</Text>
+          {item.opponents.length > 0 ?
+            <View>
+              <Image
+                style={matchStyles.teamImage}
+                source={{ uri: item.opponents[0].opponent.image_url }}
+                resizeMode="contain"
+              />
+              <Text style={styles.generalText}>{item.opponents[0].opponent.name}</Text>
+            </View> :
+            <Text style={styles.generalText}>TBD</Text>}
 
         </View>
 
@@ -137,12 +141,16 @@ export default function Matches({ navigation }: any) {
         </View>
 
         <View style={matchStyles.block}>
-          <Image
-            style={matchStyles.teamImage}
-            source={{ uri: item.opponents[1].opponent.image_url }}
-            resizeMode="contain"
-          />
-          <Text style={styles.generalText}>{item.opponents[1].opponent.name}</Text>
+          {item.opponents.length > 1 ?
+            <View>
+              <Image
+                style={matchStyles.teamImage}
+                source={{ uri: item.opponents[1].opponent.image_url }}
+                resizeMode="contain"
+              />
+              <Text style={styles.generalText}>{item.opponents[1].opponent.name}</Text>
+            </View> :
+            <Text style={styles.generalText}>TBD</Text>}
         </View>
 
       </View>
@@ -157,6 +165,7 @@ export default function Matches({ navigation }: any) {
         renderItem={renderMatch}
         keyExtractor={(item) => String(item.id)}
         ItemSeparatorComponent={listSeperator}
+        ListFooterComponent={listSeperator}
         ListEmptyComponent={noMatches}
         onRefresh={matchesRefetch}
         refreshing={false}
