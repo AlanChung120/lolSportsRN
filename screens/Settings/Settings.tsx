@@ -1,18 +1,17 @@
 import { Text, View, Switch, SafeAreaView, Pressable } from 'react-native'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { settingsStyles } from '../../styles/common'
 
 export default function Settings({ navigation }: any) {
   const [hideScore, setHideScore] = useState(false)
-  setSettings()
 
   async function getSettings() {
     try {
       const hideScoreJson = await AsyncStorage.getItem('hideScore')
       if (hideScoreJson === null) {
-        setSettings()
+        setHideScore(false)
       } else {
         const hideScoreparsed = JSON.parse(hideScoreJson)
         setHideScore(hideScoreparsed)
@@ -30,19 +29,19 @@ export default function Settings({ navigation }: any) {
     }
   }
 
-  async function setSettings() {
-    try {
-      AsyncStorage.setItem('hideScore', String(hideScore))
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
   useFocusEffect(
     useCallback(() => {
       getSettings()
     }, [])
   )
+
+  useEffect(() => {
+    try {
+      AsyncStorage.setItem('hideScore', String(hideScore))
+    } catch (e) {
+      console.error(e)
+    }
+  }, [hideScore])
 
   return (
     <SafeAreaView>
