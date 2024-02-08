@@ -139,7 +139,6 @@ export const settingsStyles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     height: '100%',
-    backgroundColor: '#E5E5E5'
   },
   arrowView: {
     width: '5%',
@@ -150,7 +149,6 @@ export const settingsStyles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: '#E5E5E5',
   },
   resetText: {
     color: 'red',

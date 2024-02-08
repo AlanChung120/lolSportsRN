@@ -23,6 +23,7 @@ export default function Settings({ navigation }: any) {
 
   async function resetSettings() {
     try {
+      setHideScore(false)
       await AsyncStorage.clear()
     } catch (e) {
       console.error(e)
@@ -60,12 +61,20 @@ export default function Settings({ navigation }: any) {
           </View>
         </View>
         <View style={settingsStyles.listItem}>
-          <Pressable style={settingsStyles.followingButton} onPress={() => navigation.navigate("Followings")} accessibilityLabel="View/Set Following Leagues">
+          <Pressable style={({ pressed }: any) => [
+            {
+              backgroundColor: pressed ? '#A7A7A7' : '#E5E5E5',
+            },
+            settingsStyles.followingButton]} onPress={() => navigation.navigate("Followings")} accessibilityLabel="View/Set Following Leagues">
             <Text style={settingsStyles.settingsLeftText}>Followings</Text>
           </Pressable>
         </View>
         <View style={settingsStyles.listItem}>
-          <Pressable style={settingsStyles.resetButton} onPress={resetSettings} accessibilityLabel="Reset setting">
+          <Pressable style={({ pressed }: any) => [
+            {
+              backgroundColor: pressed ? '#A7A7A7' : '#E5E5E5',
+            },
+            settingsStyles.resetButton]} onPress={resetSettings} accessibilityLabel="Reset setting">
             <Text style={settingsStyles.resetText}>Reset Settings</Text>
           </Pressable>
         </View>

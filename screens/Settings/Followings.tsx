@@ -10,7 +10,7 @@ import { listSeperator } from '../../components/common'
 import { SearchBar } from '@rneui/themed'
 
 export default function Followings() {
-  const followings = useRef<League[]>(initFollowings)
+  const followings = useRef<League[]>([])
   const [searchedFollowings, setSearchedFollowings] = useState<League[]>([])
   const [searchContent, setSearchContent] = useState("")
 
@@ -18,6 +18,8 @@ export default function Followings() {
     try {
       const followingsJson = await AsyncStorage.getItem('followings')
       if (followingsJson === null) {
+        followings.current = JSON.parse(JSON.stringify(initFollowings))
+        setSearchedFollowings(followings.current)
         setSettings()
       } else {
         followings.current = JSON.parse(followingsJson)

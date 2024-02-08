@@ -25,7 +25,9 @@ export default function Matches({ navigation }: any) {
     try {
       const hideScoreJson = await AsyncStorage.getItem('hideScore')
       const followingsJson = await AsyncStorage.getItem('followings')
-      if (followingsJson !== null) {
+      if (followingsJson === null) {
+        setFollowingsCode(worlds.code)
+      } else {
         const followingsParsed = JSON.parse(followingsJson)
         let newCode = worlds.code
         followingsParsed.map((league: League) => {
@@ -35,7 +37,9 @@ export default function Matches({ navigation }: any) {
         })
         setFollowingsCode(newCode)
       }
-      if (hideScoreJson !== null) {
+      if (hideScoreJson === null) {
+        setHideScore(false)
+      } else {
         const hideScoreParsed = JSON.parse(hideScoreJson) as boolean
         setHideScore(hideScoreParsed)
       }
