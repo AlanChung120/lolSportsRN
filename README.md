@@ -7,4 +7,5 @@ Settings Tab: You can decide which leagues to follow and whether to hide score (
 This application uses the free version of the PandaScoreAPI. So API usage is limited <br />
 Tested and runs on iPhones (IOS 16 and up) and Android phones (Android 14 and up). <br /> 
 To run (after installing NodeJS): <br />
-Open the directory in the terminal, type "npm install" then "npx expo start" and scan the QR code onto your device with the Expo Go app or use a virtual device. <br />
+Open the directory in the terminal, type "npm install" then "npx expo start" <br />
+and scan the QR code onto your device with the Expo Go app or use a virtual device. <br />
